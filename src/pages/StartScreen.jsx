@@ -1,6 +1,6 @@
 import home from "../assets/home.png";
 import { loadDataFunc } from "../quizSlice";
-import Button from "../utils/Button";
+import Button from "../components/coman components/Button";
 import { useDispatch } from "react-redux";
 
 function StartScreen() {

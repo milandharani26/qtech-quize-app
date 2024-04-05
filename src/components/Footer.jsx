@@ -1,4 +1,4 @@
-import Button from "../utils/Button"
+import Button from "./coman components/Button"
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux"
 import { nextQuestion, previousQuestion } from "../quizSlice";

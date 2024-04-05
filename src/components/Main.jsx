@@ -7,21 +7,16 @@ import { selectAnswer } from "../quizSlice";
 
 function Main() {
     const dispatch = useDispatch();
+    const { questions, index, } = useSelector((store) => store);
 
     const [selectedAnswer, setSelectedAnswer] = useState(null)
-
     useEffect(function () {
-
         if (selectedAnswer !== null) {
             dispatch(selectAnswer(selectedAnswer));
         }
 
     }, [selectedAnswer, dispatch])
 
-    console.log(selectAnswer, "selecetd answer")
-
-    console.log(selectedAnswer, "selected");
-    const { questions, index, } = useSelector((store) => store);
     console.log(questions[index], index);
 
 
@@ -34,7 +29,7 @@ function Main() {
 
             <div className={styles.options}>
                 {questions[index].options.map(option => {
-                    return <Option option={option} key={option} setSelectedAnswer={setSelectedAnswer} />
+                    return <Option option={option} key={option} setSelectedAnswer={setSelectedAnswer} /> 
                 })}
             </div>
 

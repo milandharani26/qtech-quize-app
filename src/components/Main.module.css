@@ -26,3 +26,17 @@ h3 {
     align-items: center;
     gap: 20px;
 }
+
+.radioInput:checked {
+    accent-color: #696F79;
+}
+
+.yourAns{
+    color: red;
+    font-size: 20px;
+}
+
+.correctAns{
+    color: green;
+    font-size: 20px;
+}

@@ -1,24 +1,42 @@
-import Button from "./coman components/Button"
+import Button from "../components/coman components/Button";
 import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux"
-import { nextQuestion, previousQuestion } from "../quizSlice";
+import { useDispatch } from "react-redux";
+import { calculateScore, nextQuestion, previousQuestion, restart } from "../quizSlice";
+import PercentModel from "../pages/PercentModel";
+import { useState } from "react";
 
 function Footer() {
+  const [openModel, setOpenModel] = useState(false);
 
   const dispatch = useDispatch();
-  const { index, questions } = useSelector((store) => store);
+  const { index, questions, status} = useSelector((store) => store);
 
-  console.log(index, questions.length, "okokko");
+  function handleSubmit() {
+    dispatch(calculateScore());
+    setOpenModel(true);
+  }
+
+  const oncl = status === "reviewQuize" && index === 9 ? () => dispatch(restart()) : index === 9 ? handleSubmit : () => dispatch(nextQuestion())
 
   return (
     <footer>
-      <Button type={"previous"}>Previous</Button>
-      <Button type={"next"}>Next</Button>
+      {openModel && <PercentModel />}
+      <Button
+        type={"previous"}
+        disable={index === 0}
+        onclick={() => dispatch(previousQuestion())}
+      >
+        Previous
+      </Button>
+      <Button
+        type={"next"}
+        onclick={oncl}
+      >
 
-      <Button type={"previous"} disable={index === 0 ? true : false} onclick={() => dispatch(previousQuestion())}>Previous</Button>
-      <Button type={"next"} onclick={() => dispatch(nextQuestion())}> {index + 1 === questions.length ? "submit" : "Next"}</Button>
+        {status === "reviewQuize" && index + 1 === questions.length ? "restart" : index + 1 === questions.length ? "submit" : "Next"}
+      </Button>
     </footer>
-  )
+  );
 }
 
-export default Footer
+export default Footer;

@@ -1,7 +1,9 @@
 import Timer from "./Timer";
-
+import { useSelector } from "react-redux";
 
 function Header() {
+    const status = useSelector((store) => store.status);
+
     return (
         <header className="header">
             <div>
@@ -10,8 +12,12 @@ function Header() {
             </div>
 
             <div className="flex-gap">
-                <span>Time Limit:</span>
-                {/* <Timer /> */}
+                {status === "start" && (
+                    <>
+                        <span>Time Limit:</span>
+                        <Timer />
+                    </>
+                )}
             </div>
         </header>
     );

@@ -4,59 +4,62 @@ const initialState = {
     status: "notStarted",
     questions: [],
     index: 0,
-    // answer: null,
     points: 0,
     secondsRemaining: null,
 };
 
-/*
-{id: 1, answer: NULL}
-do api call and make object like this and 
-{
-    question:
-    answer:
-    options:[]
-    selectedAnswer:null;
-    index:0
-}
-*/
 
 const quizeSlice = createSlice({
     name: "quize",
     initialState,
     reducers: {
-
-        start(state, action) { },
-
         selectAnswer(state, action) {
-            const index = state.questions;
-            // console.log(state.questions[state.index].selectedAnswer, "qyestion obj");
             state.questions[state.index].selectedAnswer = action.payload;
         },
 
         nextQuestion(state, action) {
-            state.index = state.index + 1;
+            state.index += 1;
         },
 
         previousQuestion(state, action) {
-            // console.log(state.index, "curerent question")
             state.index = state.index - 1;
         },
 
-        finish(state, action) { },
+        calculateScore(state, action) {
+            state.points = state.questions.reduce((acc, question) => {
+                if (question.answer === question.selectedAnswer) {
+                    return acc + 10;
+                }
+                else {
+                    return acc
+                }
+            }, 0)
+        },
+
+        reviewQuize(state, action) {
+            state.status = "reviewQuize";
+            state.index = 0;
+        },
+
+        finish(state, action) {
+            state.status = "finish"
+        },
 
         tick(state, action) {
             state.secondsRemaining = state.secondsRemaining - 1;
-            state.secondsRemaining === 0 ? "finished" : state.status;
         },
 
-        restart(state, action) { },
+        restart(state, action) {
+            state.status = "notStarted"
+            state.index = 0
+            state.questions = []
+            state.points = 0
+            state.secondsRemaining = null
+        },
 
     },
 
     extraReducers: (builder) => {
-        console.log("extra");
-
         builder.addCase(loadDataFunc.fulfilled, (state, action) => {
             state.questions = action.payload;
             state.status = "start"
@@ -64,7 +67,6 @@ const quizeSlice = createSlice({
         });
     },
 });
-
 
 export const loadDataFunc = createAsyncThunk(
     "quize/loadDataFunc",
@@ -74,6 +76,7 @@ export const loadDataFunc = createAsyncThunk(
             const data = await res.json();
 
             const modifyedData = data.map((resObj) => {
+
                 const randomIndex = Math.floor(Math.random() * 3);
                 const options = [...resObj.incorrectAnswers];
                 options.splice(randomIndex, 0, resObj?.correctAnswer);
@@ -87,7 +90,6 @@ export const loadDataFunc = createAsyncThunk(
                 };
                 return questionObj;
             });
-            console.log(modifyedData, "data");
             return modifyedData;
 
         } catch (error) {
@@ -104,7 +106,9 @@ export const {
     finish,
     tick,
     restart,
-    selectAnswer
+    selectAnswer,
+    calculateScore,
+    reviewQuize
 } = quizeSlice.actions;
 
 export default quizeSlice.reducer;

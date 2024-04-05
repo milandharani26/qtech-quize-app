@@ -1,0 +1,28 @@
+.buttonRight {
+    padding: 17px 70px;
+    background-color: #8692A6;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    position: absolute;
+    right: 10%;
+    bottom: 10%;
+    /* font-size: 22px; */
+    font-size: 16px;
+
+    /* position: relative;
+    left: 90%; */
+}
+
+.buttonLeft {
+    padding: 17px 70px;
+    background-color: #8692A6;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    position: absolute;
+    left: 7%;
+    bottom: 10%;
+    /* font-size: 22px; */
+    font-size: 16px;
+}
